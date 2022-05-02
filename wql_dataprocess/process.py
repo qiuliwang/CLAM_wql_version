@@ -28,10 +28,12 @@ def split_label(temp):
     patient_id = temp[0][:11]
     slide_id = patient_id + '_' + temp[0][12:len(temp[0]) - 4]
     
-    if temp[1] == 'negative':
-        label = 'normal_tissue'
+    if temp[1] == 'itc':
+        label = 'subtype_1'
+    elif temp[1] == 'macro':
+        label = 'subtype_2'
     else:
-        label = 'tumor_tissue'
+        label = 'subtype_3'
     return [patient_id, slide_id, label]
 
 process_label = []
@@ -39,7 +41,8 @@ for oneline in camelyon_data[1:]:
     temp = oneline
     filename = temp[0]
     if '.zip' not in filename:
-        temp_label = split_label(temp)
-        process_label.append(temp_label)
+        if temp[1] != 'negative':
+            temp_label = split_label(temp)
+            process_label.append(temp_label)
 
 csvTools.writeCSV('processed_label.csv', process_label)

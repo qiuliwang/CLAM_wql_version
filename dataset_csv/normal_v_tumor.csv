@@ -1,3 +1,4 @@
+case_id,slide_id,label
 patient_000,patient_000_node_0,normal_tissue
 patient_000,patient_000_node_1,normal_tissue
 patient_000,patient_000_node_2,normal_tissue

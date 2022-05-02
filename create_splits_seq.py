@@ -34,7 +34,7 @@ if args.task == 'task_1_tumor_vs_normal':
 elif args.task == 'task_2_tumor_subtyping':
     print('num of classes: ', 3)
     args.n_classes=3
-    dataset = Generic_WSI_Classification_Dataset(csv_path = 'dataset_csv/tumor_subtyping_dummy_clean.csv',
+    dataset = Generic_WSI_Classification_Dataset(csv_path = 'dataset_csv/processed_label.csv',
                             shuffle = False, 
                             seed = args.seed, 
                             print_info = True,
