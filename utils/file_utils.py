@@ -15,6 +15,7 @@ def load_pkl(filename):
 
 def save_hdf5(output_path, asset_dict, attr_dict= None, mode='a'):
     file = h5py.File(output_path, mode)
+    print('output_path: ', output_path)
     for key, val in asset_dict.items():
         data_shape = val.shape
         if key not in file:

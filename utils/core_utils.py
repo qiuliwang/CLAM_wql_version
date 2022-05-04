@@ -107,6 +107,8 @@ def train(datasets, cur, args):
     train_split, val_split, test_split = datasets
     save_splits(datasets, ['train', 'val', 'test'], os.path.join(args.results_dir, 'splits_{}.csv'.format(cur)))
     print('Done!')
+    # print('train_split: ', train_split)
+
     print("Training on {} samples".format(len(train_split)))
     print("Validating on {} samples".format(len(val_split)))
     print("Testing on {} samples".format(len(test_split)))
@@ -166,7 +168,9 @@ def train(datasets, cur, args):
     print('Done!')
     
     print('\nInit Loaders...', end=' ')
+
     train_loader = get_split_loader(train_split, training=True, testing = args.testing, weighted = args.weighted_sample)
+
     val_loader = get_split_loader(val_split,  testing = args.testing)
     test_loader = get_split_loader(test_split, testing = args.testing)
     print('Done!')
