@@ -124,6 +124,8 @@ def train(datasets, cur, args):
     print('Done!')
     
     print('\nInit Model...', end=' ')
+    print('\nmodel_type...', args.model_type)
+
     model_dict = {"dropout": args.drop_out, 'n_classes': args.n_classes}
     if args.model_type == 'clam' and args.subtyping:
         model_dict.update({'subtyping': True})
@@ -184,16 +186,14 @@ def train(datasets, cur, args):
     print('Done!')
 
     for epoch in range(args.max_epochs):
-        if args.model_type in ['clam_sb', 'clam_mb'] and not args.no_inst_cluster:     
+        if args.model_type in ['clam_sb', 'clam_mb'] and not args.no_inst_cluster: 
             train_loop_clam(epoch, model, train_loader, optimizer, args.n_classes, args.bag_weight, writer, loss_fn)
             stop = validate_clam(cur, epoch, model, val_loader, args.n_classes, 
                 early_stopping, writer, loss_fn, args.results_dir)
-        
         else:
             train_loop(epoch, model, train_loader, optimizer, args.n_classes, writer, loss_fn)
             stop = validate(cur, epoch, model, val_loader, args.n_classes, 
                 early_stopping, writer, loss_fn, args.results_dir)
-        
         if stop: 
             break
 
@@ -223,7 +223,6 @@ def train(datasets, cur, args):
         writer.close()
     return results_dict, test_auc, val_auc, 1-test_error, 1-val_error 
 
-
 def train_loop_clam(epoch, model, loader, optimizer, n_classes, bag_weight, writer = None, loss_fn = None):
     device=torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.train()
@@ -238,7 +237,11 @@ def train_loop_clam(epoch, model, loader, optimizer, n_classes, bag_weight, writ
     print('\n')
     for batch_idx, (data, label) in enumerate(loader):
         data, label = data.to(device), label.to(device)
+        # print('data: ', data.size())
+        # print('label: ', label)
+
         logits, Y_prob, Y_hat, _, instance_dict = model(data, label=label, instance_eval=True)
+        # print('logits: ', logits.size())
 
         acc_logger.log(Y_hat, label)
         loss = loss_fn(logits, label)

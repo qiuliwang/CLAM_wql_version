@@ -19,7 +19,6 @@ def writeCSV(filename, lines):
                 content += one_word
                 content += ','
             content = content[:len(content) - 1]
-            print(content)
             f.write(str.encode(content + '\n'))
 
 

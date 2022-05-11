@@ -121,6 +121,9 @@ class Generic_WSI_Classification_Dataset(Dataset):
 		data.reset_index(drop=True, inplace=True)
 		for i in data.index:
 			key = data.loc[i, 'label']
+			print('key: ', key)
+			print('label_dict: ', label_dict)
+
 			data.at[i, 'label'] = label_dict[key]
 
 		return data
@@ -345,6 +348,9 @@ class Generic_MIL_Dataset(Generic_WSI_Classification_Dataset):
 			if self.data_dir:
 				full_path = os.path.join(data_dir, 'pt_files', '{}.pt'.format(slide_id))
 				features = torch.load(full_path)
+				# print('features: ', features.size())
+				# print('label: ', label)
+
 				return features, label
 			
 			else:
@@ -354,6 +360,7 @@ class Generic_MIL_Dataset(Generic_WSI_Classification_Dataset):
 			full_path = os.path.join(data_dir,'h5_files','{}.h5'.format(slide_id))
 			with h5py.File(full_path,'r') as hdf5_file:
 				features = hdf5_file['features'][:]
+				# print('$$$$$$$$$$$$$$$$$$$$$$ features: ', features.shape)
 				coords = hdf5_file['coords'][:]
 
 			features = torch.from_numpy(features)

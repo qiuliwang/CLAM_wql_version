@@ -23,7 +23,7 @@ args = parser.parse_args()
 if args.task == 'task_1_tumor_vs_normal':
     args.n_classes=2
     print('num of classes: ', 2)
-    dataset = Generic_WSI_Classification_Dataset(csv_path = 'dataset_csv/processed_label.csv',
+    dataset = Generic_WSI_Classification_Dataset(csv_path = 'dataset_csv/normal_v_tumor.csv',
                             shuffle = False, 
                             seed = args.seed, 
                             print_info = True,

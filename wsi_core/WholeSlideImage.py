@@ -317,8 +317,8 @@ class WholeSlideImage(object):
     def _getPatchGenerator(self, cont, cont_idx, patch_level, save_path, patch_size=256, step_size=256, custom_downsample=1,
         white_black=True, white_thresh=15, black_thresh=50, contour_fn='four_pt', use_padding=True):
         start_x, start_y, w, h = cv2.boundingRect(cont) if cont is not None else (0, 0, self.level_dim[patch_level][0], self.level_dim[patch_level][1])
-        print("Bounding Box:", start_x, start_y, w, h)
-        print("Contour Area:", cv2.contourArea(cont))
+        # print("Bounding Box:", start_x, start_y, w, h)
+        # print("Contour Area:", cv2.contourArea(cont))
         
         if custom_downsample > 1:
             assert custom_downsample == 2 
@@ -429,7 +429,7 @@ class WholeSlideImage(object):
                 print('Processing contour {}/{}'.format(idx, n_contours))
             
             asset_dict, attr_dict = self.process_contour(cont, self.holes_tissue[idx], patch_level, save_path, patch_size, step_size, **kwargs)
-            print('Shape of asset_dict: ', asset_dict['coords'].shape)
+            # print('Shape of asset_dict: ', asset_dict['coords'].shape)
             if len(asset_dict) > 0:
                 if init:
                     save_hdf5(save_path_hdf5, asset_dict, attr_dict, mode='w')
@@ -455,8 +455,8 @@ class WholeSlideImage(object):
             stop_y = min(start_y+h, img_h-ref_patch_size[1]+1)
             stop_x = min(start_x+w, img_w-ref_patch_size[0]+1)
         
-        print("Bounding Box:", start_x, start_y, w, h)
-        print("Contour Area:", cv2.contourArea(cont))
+        # print("Bounding Box:", start_x, start_y, w, h)
+        # print("Contour Area:", cv2.contourArea(cont))
 
         if bot_right is not None:
             stop_y = min(bot_right[1], stop_y)

@@ -136,9 +136,15 @@ class CLAM_SB(nn.Module):
         device=h.device
         if len(A.shape) == 1:
             A = A.view(1, -1)
+        
         top_p_ids = torch.topk(A, self.k_sample)[1][-1]
         top_p = torch.index_select(h, dim=0, index=top_p_ids)
+        # print('top_p_ids: ', top_p_ids.size())
+        # print('top_p: ', top_p.size())
+
         p_targets = self.create_negative_targets(self.k_sample, device)
+        # print('p_targets: ', p_targets.size())
+
         logits = classifier(top_p)
         p_preds = torch.topk(logits, 1, dim = 1)[1].squeeze(1)
         instance_loss = self.instance_loss_fn(logits, p_targets)
@@ -146,12 +152,17 @@ class CLAM_SB(nn.Module):
 
     def forward(self, h, label=None, instance_eval=False, return_features=False, attention_only=False):
         device = h.device
-        A, h = self.attention_net(h)  # NxK        
+        # print('h: ', h.size())
+        A, h = self.attention_net(h)  # NxK   
+        # print('h: ', h.size())
+        # print('A: ', A.size())
+
         A = torch.transpose(A, 1, 0)  # KxN
         if attention_only:
             return A
         A_raw = A
         A = F.softmax(A, dim=1)  # softmax over N
+        # print('A: ', A.size())
 
         if instance_eval:
             total_inst_loss = 0.0
