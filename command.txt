@@ -4,8 +4,8 @@ CUDA_VISIBLE_DEVICES=3 python extract_features_fp.py --data_h5_dir DataResult/ -
 
 python create_splits_seq.py --task task_1_tumor_vs_normal --seed 1 --label_frac 0.75 --k 10
 
-CUDA_VISIBLE_DEVICES=2 python main.py --drop_out --early_stopping --lr 2e-4 --k 5 --label_frac 0.5 --exp_code task_2_tumor_subtyping_CLAM_50 --weighted_sample --bag_loss ce --inst_loss svm --task task_2_tumor_subtyping --model_type clam_sb --log_data --data_root_dir Features
-
-CUDA_VISIBLE_DEVICES=3 python main.py --drop_out --early_stopping --lr 2e-4 --k 5 --label_frac 0.5 --exp_code task_1_tumor_vs_normal_75 --weighted_sample --bag_loss ce --inst_loss svm --task task_1_tumor_vs_normal --model_type clam_sb --log_data --subtyping --data_root_dir Features
+CUDA_VISIBLE_DEVICES=3 python main.py --drop_out --early_stopping --lr 2e-4 --k 10 --label_frac 0.5 --exp_code task_1_tumor_vs_normal_75 --weighted_sample --bag_loss ce --inst_loss svm --task task_1_tumor_vs_normal --model_type clam_sb --log_data --subtyping --data_root_dir Features
 
 CUDA_VISIBLE_DEVICES=0,1 python create_heatmaps.py --config config_template.yaml
+
+CUDA_VISIBLE_DEVICES=0,1 python select_patches.py --config config_template.yaml
