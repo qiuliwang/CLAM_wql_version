@@ -45,7 +45,7 @@ def main(args):
         print('{}/splits_{}.csv'.format(args.split_dir, i))
         train_dataset, val_dataset, test_dataset = dataset.return_splits(from_id=False, 
                 csv_path='{}/splits_{}.csv'.format(args.split_dir, i))
-        print('train_dataset: ', train_dataset)
+        # print('train_dataset: ', train_dataset)
         datasets = (train_dataset, val_dataset, test_dataset)
         results, test_auc, val_auc, test_acc, val_acc  = train(datasets, i, args)
         all_test_auc.append(test_auc)
@@ -82,7 +82,7 @@ parser.add_argument('--seed', type=int, default=1,
 parser.add_argument('--k', type=int, default=10, help='number of folds (default: 10)')
 parser.add_argument('--k_start', type=int, default=-1, help='start fold (default: -1, last fold)')
 parser.add_argument('--k_end', type=int, default=-1, help='end fold (default: -1, first fold)')
-parser.add_argument('--results_dir', default='./results', help='results directory (default: ./results)')
+parser.add_argument('--results_dir', default='./results_900', help='results directory (default: ./results)')
 parser.add_argument('--split_dir', type=str, default=None, 
                     help='manually specify the set of splits to use, ' 
                     +'instead of infering from the task and label_frac argument (default: None)')

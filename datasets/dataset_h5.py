@@ -96,6 +96,7 @@ class Whole_Slide_Bag_FP(Dataset):
 	def __init__(self,
 		file_path,
 		wsi,
+		slide_id,
 		pretrained=False,
 		custom_transforms=None,
 		custom_downsample=1,
@@ -111,6 +112,7 @@ class Whole_Slide_Bag_FP(Dataset):
 		"""
 		self.pretrained=pretrained
 		self.wsi = wsi
+		self.slide_id = slide_id
 		if not custom_transforms:
 			self.roi_transforms = eval_transforms(pretrained=pretrained)
 		else:
@@ -144,12 +146,13 @@ class Whole_Slide_Bag_FP(Dataset):
 		print('target patch size: ', self.target_patch_size)
 		print('pretrained: ', self.pretrained)
 		print('transformations: ', self.roi_transforms)
+		print('dset: ', len(dset))
 
 	def __getitem__(self, idx):
 		with h5py.File(self.file_path,'r') as hdf5_file:
 			coord = hdf5_file['coords'][idx]
 		img = self.wsi.read_region(coord, self.patch_level, (self.patch_size, self.patch_size)).convert('RGB')
-
+		img.save('Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
 		if self.target_patch_size is not None:
 			img = img.resize(self.target_patch_size)
 		img = self.roi_transforms(img).unsqueeze(0)
