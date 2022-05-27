@@ -6,7 +6,7 @@ import random
 import numpy as np
 import pdb
 import time
-from datasets.dataset_h5 import Dataset_All_Bags, Whole_Slide_Bag_FP
+from datasets.dataset_h5 import Dataset_All_Bags, Whole_Slide_Bag_FP, Whole_Slide_Bag_FP_
 from torch.utils.data import DataLoader
 from models.resnet_custom import resnet50_baseline
 import argparse
@@ -42,7 +42,7 @@ def compute_w_loader(file_path, output_path, wsi, model,
         custom_downsample: custom defined downscale factor of image patches
         target_patch_size: custom defined, rescaled image size before embedding
     """
-    dataset = Whole_Slide_Bag_FP(file_path=file_path, wsi=wsi, pretrained=pretrained, 
+    dataset = Whole_Slide_Bag_FP_(file_path=file_path, wsi=wsi, pretrained=pretrained, 
         custom_downsample=custom_downsample, target_patch_size=target_patch_size)
     x, y = dataset[0]
     kwargs = {'num_workers': 4, 'pin_memory': True} if device.type == "cuda" else {}
@@ -68,7 +68,7 @@ def compute_w_loader(file_path, output_path, wsi, model,
             # features = target_proj_one.cpu().numpy()
             # print('shape of target_proj_one: ', target_proj_one.shape)
             # print('shape of target_proj_two: ', target_proj_two.shape)
-            features = torch.cat((target_proj_one, target_proj_two), 1).cpu().numpy()
+            features = target_proj_one.cpu().numpy() #torch.cat((target_proj_one, target_proj_two), 1).cpu().numpy()
 
             asset_dict = {'features': features, 'coords': coords}
             save_hdf5(output_path, asset_dict, attr_dict= None, mode=mode)
@@ -111,13 +111,13 @@ if __name__ == '__main__':
         resnet,
         image_size = IMAGE_SIZE,
         hidden_layer = 'avgpool',
-        projection_size = 512,
+        projection_size = 1024,
         projection_hidden_size = 4096,
         moving_average_decay = 0.99
     )
         
     # model = resnet50_baseline(pretrained=True)
-    model.load_state_dict(torch.load('/home1/qiuliwang/Code/byol-pytorch-master/examples/trad_torch/checkpoint/900.pth.tar'), strict = False)
+    model.load_state_dict(torch.load('/home1/qiuliwang/Code/byol-pytorch-master/examples/trad_torch/checkpoint/111.pth.tar'), strict = False)
     model = model.to(device)
 
     # print_network(model)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     total = len(bags_dataset)
 
     # for bag_candidate_idx in range(250, total):
-    for bag_candidate_idx in range(total):
+    for bag_candidate_idx in range(205, total):
         slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
         bag_name = slide_id+'.h5'
         h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)

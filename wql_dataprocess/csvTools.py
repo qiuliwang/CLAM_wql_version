@@ -17,10 +17,25 @@ def writeCSV(filename, lines):
             content = ''
             for one_word in line:
                 content += one_word
-                content += ','
-            content = content[:len(content) - 1]
             f.write(str.encode(content + '\n'))
 
+def writeCSV(filename, lines):
+    with open(filename, "wb") as f:
+        for line in lines:
+            content = ''
+            for one_word in line:
+                content += one_word                
+                content += ','
+            content = content[ : len(content) - 1]
+            f.write(str.encode(content + '\n'))
+
+def writeCSV_(filename, lines):
+    with open(filename, "wb") as f:
+        for line in lines:
+            content = ''
+            for one_word in line:
+                content += one_word 
+            f.write(str.encode(content + '\n'))
 
 def readCSV(filename):
     lines = []

@@ -6,7 +6,7 @@ import random
 import numpy as np
 import pdb
 import time
-from datasets.dataset_h5 import Dataset_All_Bags, Whole_Slide_Bag_FP
+from datasets.dataset_h5 import Dataset_All_Bags, Whole_Slide_Bag_FP_
 from torch.utils.data import DataLoader
 from models.resnet_custom import resnet50_baseline
 import argparse
@@ -31,7 +31,7 @@ def compute_w_loader(file_path, output_path, wsi, model,
 		custom_downsample: custom defined downscale factor of image patches
 		target_patch_size: custom defined, rescaled image size before embedding
 	"""
-	dataset = Whole_Slide_Bag_FP(file_path=file_path, wsi=wsi, pretrained=pretrained, 
+	dataset = Whole_Slide_Bag_FP_(file_path=file_path, wsi=wsi, pretrained=pretrained, 
 		custom_downsample=custom_downsample, target_patch_size=target_patch_size)
 	x, y = dataset[0]
 	kwargs = {'num_workers': 4, 'pin_memory': True} if device.type == "cuda" else {}
@@ -97,7 +97,7 @@ if __name__ == '__main__':
 	model.eval()
 	total = len(bags_dataset)
 
-	for bag_candidate_idx in range(total):
+	for bag_candidate_idx in range(300, total):
 		slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
 		bag_name = slide_id+'.h5'
 		h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)

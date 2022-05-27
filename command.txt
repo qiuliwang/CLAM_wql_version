@@ -1,14 +1,17 @@
 python create_patches_fp.py --source /home1/qiuliwang/Data/CAMELYON17/training/center_0 --save_dir DataResult --patch_size 256 --seg --patch --stitch
 
-CUDA_VISIBLE_DEVICES=3 python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path  DataResult/process_list_autogen.csv --feat_dir Features --batch_size 1024 --slide_ext .tif
+CUDA_VISIBLE_DEVICES=3 python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features --batch_size 1024 --slide_ext .tif
 
-CUDA_VISIBLE_DEVICES=4 python extract_features_byol.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path  DataResult/process_list_autogen.csv --feat_dir Features_byol --batch_size 1024 --slide_ext .tif
+CUDA_VISIBLE_DEVICES=4 python extract_features_byol.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features_byol_moreimage --batch_size 1024 --slide_ext .tif
 
-CUDA_VISIBLE_DEVICES=4 python extract_patches_wql.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path  DataResult/process_list_autogen.csv --feat_dir Extracted_Patch --batch_size 1024 --slide_ext .tif
+CUDA_VISIBLE_DEVICES=4 python extract_patches_wql.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path DataResult/process_list_autogen.csv --feat_dir Extracted_Patch --batch_size 1024 --slide_ext .tif
 
 python create_splits_seq.py --task task_1_tumor_vs_normal --seed 1 --label_frac 0.75 --k 10
 
 CUDA_VISIBLE_DEVICES=7 python main.py --drop_out --early_stopping --lr 2e-4 --k 10 --label_frac 0.5 --exp_code task_1_tumor_vs_normal_75 --weighted_sample --bag_loss ce --inst_loss svm --task task_1_tumor_vs_normal --model_type clam_sb --log_data --subtyping --data_root_dir Features_byol_900
+
+CUDA_VISIBLE_DEVICES=7 python test_main.py --drop_out --early_stopping --lr 2e-4 --k 10 --label_frac 0.5 --exp_code task_1_tumor_vs_normal_75 --weighted_sample --bag_loss ce --inst_loss svm --task task_1_tumor_vs_normal --model_type clam_sb --log_data --subtyping --data_root_dir Features_byol_moreimage
+
 
 CUDA_VISIBLE_DEVICES=0,1 python create_heatmaps.py --config config_template.yaml
 
