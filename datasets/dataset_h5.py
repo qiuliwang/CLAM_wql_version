@@ -7,12 +7,12 @@ import math
 import re
 import pdb
 import pickle
-
+import random
 from torch.utils.data import Dataset, DataLoader, sampler
 from torchvision import transforms, utils, models
 import torch.nn.functional as F
 
-from PIL import Image
+from PIL import Image, ImageStat
 import h5py
 
 from random import randrange
@@ -215,7 +215,11 @@ class Whole_Slide_Bag_FP(Dataset):
 		with h5py.File(self.file_path,'r') as hdf5_file:
 			coord = hdf5_file['coords'][idx]
 		img = self.wsi.read_region(coord, self.patch_level, (self.patch_size, self.patch_size)).convert('RGB')
-		img.save('Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
+		status = ImageStat.Stat(img).var
+		if status[0] > 100 and status[0] < 6000 and status[1] > 100 and status[1] < 6000 and status[2] > 100 and status[2] < 6000:
+			if random.randint(1,10) % 5 == 0:
+				img.save('Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
+		# + '_' + str(ImageStat.Stat(img).var)
 		if self.target_patch_size is not None:
 			img = img.resize(self.target_patch_size)
 		img = self.roi_transforms(img).unsqueeze(0)

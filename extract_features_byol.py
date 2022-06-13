@@ -20,7 +20,7 @@ from torchvision import models, transforms
 resnet = models.resnet50(pretrained=True)
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-BATCH_SIZE = 128
+BATCH_SIZE = 64
 EPOCHS     = 1000
 LR         = 3e-4
 NUM_GPUS   = 2
@@ -59,7 +59,7 @@ def compute_w_loader(file_path, output_path, wsi, model,
             batch = batch.to(device, non_blocking=True)
             # print('shape of batch: ', batch.size())
 
-            loss, target_proj_one, target_proj_two = model(batch)
+            projection, representation = model(batch, return_embedding = True)
             '''
                 self.target_proj_one = target_proj_one.detach()
                 self.target_proj_two = target_proj_two.detach()
@@ -68,7 +68,7 @@ def compute_w_loader(file_path, output_path, wsi, model,
             # features = target_proj_one.cpu().numpy()
             # print('shape of target_proj_one: ', target_proj_one.shape)
             # print('shape of target_proj_two: ', target_proj_two.shape)
-            features = target_proj_one.cpu().numpy() #torch.cat((target_proj_one, target_proj_two), 1).cpu().numpy()
+            features = projection.cpu().numpy() #torch.cat((target_proj_one, target_proj_two), 1).cpu().numpy()
 
             asset_dict = {'features': features, 'coords': coords}
             save_hdf5(output_path, asset_dict, attr_dict= None, mode=mode)
@@ -117,7 +117,7 @@ if __name__ == '__main__':
     )
         
     # model = resnet50_baseline(pretrained=True)
-    model.load_state_dict(torch.load('/home1/qiuliwang/Code/byol-pytorch-master/examples/trad_torch/checkpoint/111.pth.tar'), strict = False)
+    model.load_state_dict(torch.load('/home1/qiuliwang/Code/byol-pytorch-master/examples/trad_torch/checkpoint/old_90.pth.tar'), strict = False)
     model = model.to(device)
 
     # print_network(model)
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     total = len(bags_dataset)
 
     # for bag_candidate_idx in range(250, total):
-    for bag_candidate_idx in range(205, total):
+    for bag_candidate_idx in range(300, total):
         slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
         bag_name = slide_id+'.h5'
         h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)

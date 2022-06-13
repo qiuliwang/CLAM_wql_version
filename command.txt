@@ -2,7 +2,7 @@ python create_patches_fp.py --source /home1/qiuliwang/Data/CAMELYON17/training/c
 
 CUDA_VISIBLE_DEVICES=3 python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features --batch_size 1024 --slide_ext .tif
 
-CUDA_VISIBLE_DEVICES=4 python extract_features_byol.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features_byol_moreimage --batch_size 1024 --slide_ext .tif
+CUDA_VISIBLE_DEVICES=6 python extract_features_byol.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features_byol_moreimage --batch_size 1024 --slide_ext .tif
 
 CUDA_VISIBLE_DEVICES=4 python extract_patches_wql.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path DataResult/process_list_autogen.csv --feat_dir Extracted_Patch --batch_size 1024 --slide_ext .tif
 
