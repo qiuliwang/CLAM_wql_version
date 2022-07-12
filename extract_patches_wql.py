@@ -93,7 +93,7 @@ args = parser.parse_args()
 if __name__ == '__main__':
 
 	print('initializing dataset')
-	csv_path = 'DataResult/process_list_autogen.csv'
+	csv_path = 'Glioma_DataResult/process_list_autogen.csv'
 	if csv_path is None:
 		raise NotImplementedError
 
@@ -115,8 +115,8 @@ if __name__ == '__main__':
 	# model.eval()
 	total = len(bags_dataset)
 
-	# for bag_candidate_idx in range(total):
-	for bag_candidate_idx in range(10, 50):
+	for bag_candidate_idx in range(total):
+	# for bag_candidate_idx in range(10, 50):
 		slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
 		bag_name = slide_id+'.h5'
 		h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)

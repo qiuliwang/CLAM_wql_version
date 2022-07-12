@@ -218,7 +218,7 @@ class Whole_Slide_Bag_FP(Dataset):
 		status = ImageStat.Stat(img).var
 		if status[0] > 100 and status[0] < 6000 and status[1] > 100 and status[1] < 6000 and status[2] > 100 and status[2] < 6000:
 			if random.randint(1,10) % 5 == 0:
-				img.save('Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
+				img.save('Glioma_Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
 		# + '_' + str(ImageStat.Stat(img).var)
 		if self.target_patch_size is not None:
 			img = img.resize(self.target_patch_size)
