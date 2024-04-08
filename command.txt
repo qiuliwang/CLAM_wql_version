@@ -16,3 +16,8 @@ CUDA_VISIBLE_DEVICES=7 python test_main.py --drop_out --early_stopping --lr 2e-4
 CUDA_VISIBLE_DEVICES=0,1 python create_heatmaps.py --config config_template.yaml
 
 CUDA_VISIBLE_DEVICES=0,1 python select_patches.py --config config_template.yaml
+
+
+# 2024.4.8
+# command for new project
+
