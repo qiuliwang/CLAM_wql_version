@@ -52,7 +52,7 @@ def seg_and_patch(source, save_dir, patch_save_dir, mask_save_dir, stitch_save_d
 				  patch_level = 0,
 				  use_default_params = False, 
 				  seg = False, save_mask = True, 
-				  stitch= False, 
+				  stitch= False,   
 				  patch = False, auto_skip=True, process_list = None):
 	
 
@@ -251,9 +251,9 @@ def seg_and_patch(source, save_dir, patch_save_dir, mask_save_dir, stitch_save_d
 parser = argparse.ArgumentParser(description='seg and patch')
 parser.add_argument('--source', type = str,
 					help='path to folder containing raw wsi image files')
-parser.add_argument('--step_size', type = int, default=256,
+parser.add_argument('--step_size', type = int, default=1024,
 					help='step_size')
-parser.add_argument('--patch_size', type = int, default=256,
+parser.add_argument('--patch_size', type = int, default=1024,
 					help='patch_size')
 parser.add_argument('--patch', default=False, action='store_true')
 parser.add_argument('--seg', default=False, action='store_true')
@@ -263,7 +263,7 @@ parser.add_argument('--save_dir', type = str,
 					help='directory to save processed data')
 parser.add_argument('--preset', default=None, type=str,
 					help='predefined profile of default segmentation and filter parameters (.csv)')
-parser.add_argument('--patch_level', type=int, default=0, 
+parser.add_argument('--patch_level', type=int, default=1, 
 					help='downsample level at which to patch')
 parser.add_argument('--process_list',  type = str, default=None,
 					help='name of list of images to process with parameters (.csv)')

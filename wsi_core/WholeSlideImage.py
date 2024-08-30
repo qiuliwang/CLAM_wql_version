@@ -7,7 +7,8 @@ import multiprocessing as mp
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
-import openslide
+
+
 from PIL import Image
 import pdb
 import h5py
@@ -19,6 +20,8 @@ from utils.file_utils import load_pkl, save_pkl
 from PIL import Image
 
 Image.MAX_IMAGE_PIXELS = 933120000
+# os.add_dll_directory('D:\\Program Files\\openslide-win64-20231011\\bin')
+import openslide
 
 class WholeSlideImage(object):
     def __init__(self, path):

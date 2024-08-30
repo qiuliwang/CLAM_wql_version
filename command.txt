@@ -1,10 +1,10 @@
-python create_patches_fp.py --source /home1/qiuliwang/Data/Glioma/svsData --save_dir Glioma_DataResult --patch_size 512 --seg --patch --stitch
+python create_patches_fp.py --source E:\\Data\\3_HE\\svs --save_dir Three_DataResult --patch_size 1024 --seg --patch --stitch
 
 CUDA_VISIBLE_DEVICES=3 python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features --batch_size 1024 --slide_ext .tif
 
 CUDA_VISIBLE_DEVICES=6 python extract_features_byol.py --data_h5_dir DataResult/ --data_slide_dir /home1/qiuliwang/Data/CAMELYON17/training/center_0/ --csv_path wql_dataprocess/test.csv --feat_dir Features_byol_moreimage --batch_size 1024 --slide_ext .tif
 
-CUDA_VISIBLE_DEVICES=7 python extract_patches_wql.py --data_h5_dir Glioma_DataResult/ --data_slide_dir /home1/qiuliwang/Data/Glioma/svsData --csv_path Glioma_DataResult/process_list_autogen.csv --feat_dir Glioma_Extracted_Patch --batch_size 1024 --slide_ext .svs
+python extract_patches_wql.py --data_h5_dir Three_DataResult --data_slide_dir E:\\Data\\3_HE\\svs --csv_path Three_DataResult/process_list_autogen.csv --feat_dir Three_Extracted_Patch --batch_size 1024 --slide_ext .svs
 
 python create_splits_seq.py --task task_1_tumor_vs_normal --seed 1 --label_frac 0.75 --k 10
 
@@ -21,3 +21,25 @@ CUDA_VISIBLE_DEVICES=0,1 python select_patches.py --config config_template.yaml
 # 2024.4.8
 # command for new project
 
+python create_patches_sdpc.py --source G:\\879Cases\\PathoWithCT --save_dir D:\\Code\\CLAM_wql_version-main\Lung_DataResult --patch_size 2048 --seg --patch
+
+
+CUDA_VISIBLE_DEVICES=0 python extract_patches_SDPC.py --data_h5_dir D:\\Code\\CLAM_wql_version-main\\Lung_DataResult --data_slide_dir G:\\879Cases\\PathoWithCT --csv_path D:\\Code\\CLAM_wql_version-main\\Lung_DataResult\\process_list_autogen.csv --feat_dir D:\\Code\\CLAM_wql_version-main\\Extracted_Patch --batch_size 2048 --slide_ext .sdpc
+
+
+python create_patches_fp.py --source E:\\Data\\CAMELYON17\\training\\center_0 --save_dir D:\\Code\\CLAM_wql_version-main\\Glioma_DataResult --patch_size 1024 --seg --patch
+python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir E:\\Data\\CAMELYON17\\training\\center_0 --csv_path D:\\Code\\CLAM_wql_version-main\\Glioma_DataResult\\process_list_autogen.csv --feat_dir Features --batch_size 1024 --slide_ext .svs
+
+
+5 28 
+python create_patches_fp.py --source /home/wangqiuli/Data/Glioma/Ori_Data/CD4 --save_dir Glioma_CD4_Data_Results --patch_size 1024 --seg --patch --stitch --patch_level 1 --step_size 512
+
+python extract_patches_wql.py --data_h5_dir Glioma_CD4_Data_Results --data_slide_dir /home/wangqiuli/Data/Glioma/Ori_Data/CD4 --csv_path Glioma_CD4_Data_Results/process_list_autogen.csv --feat_dir Glioma_CD4_Extract_Patch --batch_size 1024 --slide_ext .svs
+
+
+python extract_patches_withmask.py --data_h5_dir Glioma_Data_Results --data_slide_dir /home/wangqiuli/Data/Glioma/Ori_Data/HE/svsData --csv_path Glioma_Data_Results/process_list_autogen.csv --feat_dir Glioma_Extract_Patch --batch_size 1024 --slide_ext .svs
+
+
+
+python create_patches_fp.py --source E:\\Data\\MALI_20240603\\SVS_Slide\\HE --save_dir PRIVATE_DataResult --patch_size 1024 --seg --patch --stitch
+python extract_patches_withmask.py --data_h5_dir PRIVATE_DataResult --data_slide_dir E:\\Data\\MALI_20240603\\SVS_Slide\\HE --csv_path PRIVATE_DataResult/process_list_autogen.csv --feat_dir PRIVATE_Extracted_Patch --batch_size 1024 --slide_ext .svs

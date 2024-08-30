@@ -14,8 +14,8 @@ from utils.utils import print_network, collate_features
 from utils.file_utils import save_hdf5
 from PIL import Image
 import h5py
-import openslide
 import cv2 as cv 
+import openslide
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
@@ -50,7 +50,7 @@ def compute_w_loader_(file_path, slide_id, output_path, wsi,
 	dataset = Whole_Slide_Bag_FP(file_path=file_path, slide_id = slide_id, wsi=wsi, pretrained=False, 
 		custom_downsample=custom_downsample, target_patch_size=target_patch_size)
 	x, y = dataset[0]
-	kwargs = {'num_workers': 4, 'pin_memory': True} if device.type == "cuda" else {}
+	kwargs = {'num_workers': 1, 'pin_memory': True} if device.type == "cuda" else {}
 	loader = DataLoader(dataset=dataset, batch_size=batch_size, **kwargs, collate_fn=collate_features)
 
 	if verbose > 0:
@@ -93,10 +93,9 @@ args = parser.parse_args()
 if __name__ == '__main__':
 
 	print('initializing dataset')
-	csv_path = 'Glioma_DataResult/process_list_autogen.csv'
+	csv_path = args.csv_path    
 	if csv_path is None:
 		raise NotImplementedError
-
 	bags_dataset = Dataset_All_Bags(csv_path)
 	
 	os.makedirs(args.feat_dir, exist_ok=True)
@@ -144,6 +143,3 @@ if __name__ == '__main__':
 		# features = torch.from_numpy(features)
 		# bag_base, _ = os.path.splitext(bag_name)
 		# torch.save(features, os.path.join(args.feat_dir, 'pt_files', bag_base+'.pt'))
-
-
-

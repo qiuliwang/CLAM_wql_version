@@ -14,7 +14,9 @@ from utils.utils import print_network, collate_features
 from utils.file_utils import save_hdf5
 from PIL import Image
 import h5py
+os.add_dll_directory('D:\\Program Files\\openslide-win64-20231011\\bin')
 import openslide
+
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
 def compute_w_loader(file_path, output_path, wsi, model,
@@ -97,7 +99,7 @@ if __name__ == '__main__':
 	model.eval()
 	total = len(bags_dataset)
 
-	for bag_candidate_idx in range(300, total):
+	for bag_candidate_idx in range(5):
 		slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
 		bag_name = slide_id+'.h5'
 		h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)
