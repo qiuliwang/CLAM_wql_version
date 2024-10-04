@@ -32,14 +32,11 @@ python extract_features_fp.py --data_h5_dir DataResult/ --data_slide_dir E:\\Dat
 
 
 5 28 
-python create_patches_fp.py --source /home/wangqiuli/Data/Glioma/Ori_Data/CD4 --save_dir Glioma_CD4_Data_Results --patch_size 1024 --seg --patch --stitch --patch_level 1 --step_size 512
+python create_patches_fp.py --source /home/wangqiuli/Data/Liver_TLS/WSI --save_dir Liver_Data_Results --patch_size 1024 --seg --patch  --patch_level 1 --step_size 512
 
-python extract_patches_wql.py --data_h5_dir Glioma_CD4_Data_Results --data_slide_dir /home/wangqiuli/Data/Glioma/Ori_Data/CD4 --csv_path Glioma_CD4_Data_Results/process_list_autogen.csv --feat_dir Glioma_CD4_Extract_Patch --batch_size 1024 --slide_ext .svs
-
+python extract_patches_wql.py --data_h5_dir Liver_Data_Results --data_slide_dir /home/wangqiuli/Data/Liver_TLS/WSI --csv_path Liver_Data_Results/process_list_autogen.csv --feat_dir Liver_Extract_Patch --batch_size 1024 --slide_ext .svs
 
 python extract_patches_withmask.py --data_h5_dir Glioma_Data_Results --data_slide_dir /home/wangqiuli/Data/Glioma/Ori_Data/HE/svsData --csv_path Glioma_Data_Results/process_list_autogen.csv --feat_dir Glioma_Extract_Patch --batch_size 1024 --slide_ext .svs
-
-
 
 python create_patches_fp.py --source E:\\Data\\MALI_20240603\\SVS_Slide\\HE --save_dir PRIVATE_DataResult --patch_size 1024 --seg --patch --stitch
 python extract_patches_withmask.py --data_h5_dir PRIVATE_DataResult --data_slide_dir E:\\Data\\MALI_20240603\\SVS_Slide\\HE --csv_path PRIVATE_DataResult/process_list_autogen.csv --feat_dir PRIVATE_Extracted_Patch --batch_size 1024 --slide_ext .svs

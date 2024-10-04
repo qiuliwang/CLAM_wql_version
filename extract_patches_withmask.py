@@ -122,29 +122,31 @@ if __name__ == '__main__':
 
     info = []
 
+    id_list = ['B201812997-2', 'B201902463-2', 'B202005122-2', 'B202012830-7']
     for bag_candidate_idx in range(total):
     # for bag_candidate_idx in range(10, 50):
         slide_id = bags_dataset[bag_candidate_idx].split(args.slide_ext)[0]
-        
-        bag_name = slide_id+'.h5'
-        h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)
-        slide_file_path = os.path.join(args.data_slide_dir, slide_id+args.slide_ext)
-        print('\nprogress: {}/{}'.format(bag_candidate_idx, total))
-        print(slide_id)
+        if slide_id in id_list:
+            print(slide_id)
+            bag_name = slide_id+'.h5'
+            h5_file_path = os.path.join(args.data_h5_dir, 'patches', bag_name)
+            slide_file_path = os.path.join(args.data_slide_dir, slide_id+args.slide_ext)
+            print('\nprogress: {}/{}'.format(bag_candidate_idx, total))
+            print(slide_id)
 
-        if not args.no_auto_skip and slide_id+'.pt' in dest_files:
-            print('skipped {}'.format(slide_id))
-            continue 
+            if not args.no_auto_skip and slide_id+'.pt' in dest_files:
+                print('skipped {}'.format(slide_id))
+                continue 
 
-        time_start = time.time()
-        
-        wsi = openslide.open_slide(slide_file_path)
-        print('Image dimension: ', wsi.level_dimensions)
-        print('Image downsamples: ', wsi.level_downsamples)
-        level_dim = 1
-        print(wsi.level_dimensions[level_dim])
+            time_start = time.time()
+            
+            wsi = openslide.open_slide(slide_file_path)
+            print('Image dimension: ', wsi.level_dimensions)
+            print('Image downsamples: ', wsi.level_downsamples)
+            level_dim = 1
+            print(wsi.level_dimensions[level_dim])
 
-        try:
+            # try:
             mask_name = os.path.join('/home/wangqiuli/Data/Glioma/thumori', slide_id + '_mask.npy')
             mask = np.load(mask_name)
             print('Mask shape: ', mask.shape)
@@ -153,6 +155,7 @@ if __name__ == '__main__':
             print('Mask2 shape: ', mask2.shape)
 
             print(mask2.max())
+            mask3 = mask2
             mask2 = Image.fromarray(mask2)
             # cv2.imwrite(slide_id + '.png', mask2)
             # mask2.save(slide_id + '.png')
@@ -162,10 +165,10 @@ if __name__ == '__main__':
             custom_downsample=args.custom_downsample, target_patch_size=args.target_patch_size)
             time_elapsed = time.time() - time_start
             print('\ncomputing features for {} took {} s'.format(output_file_path, time_elapsed))
-            print(str(slide_id) + ',' + str(mask2.shape[0]) + ',' + str(mask2.shape[1]))
-            info.append(str(slide_id) + ',' + str(mask2.shape[0]) + ',' + str(mask2.shape[1]))
-        except:
-            # mask = np.zeros(wsi.level_dimensions[1])
-            print('Mask zero shape: ', wsi.level_dimensions[1])
+            print(str(slide_id) + ',' + str(mask3.shape[0]) + ',' + str(mask3.shape[1]))
+            info.append(str(slide_id) + ',' + str(mask3.shape[0]) + ',' + str(mask3.shape[1]))
+            # except:
+            #     # mask = np.zeros(wsi.level_dimensions[1])
+            #     print('Mask zero shape: ', wsi.level_dimensions[1])
 
     writeTXT('mask_info.csv', info)     

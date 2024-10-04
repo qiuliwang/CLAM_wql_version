@@ -34,7 +34,7 @@ device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cp
 
 def compute_w_loader_(file_path, slide_id, output_path, wsi,
  	batch_size = 8, verbose = 0, print_every=20, pretrained=True, 
-	custom_downsample=1, target_patch_size=-1):
+	custom_downsample=1, target_patch_size=-1, feat_dir = ''):
 	"""
 	get patch images
 	args:
@@ -48,7 +48,7 @@ def compute_w_loader_(file_path, slide_id, output_path, wsi,
 		target_patch_size: custom defined, rescaled image size before embedding
 	"""
 	dataset = Whole_Slide_Bag_FP(file_path=file_path, slide_id = slide_id, wsi=wsi, pretrained=False, 
-		custom_downsample=custom_downsample, target_patch_size=target_patch_size)
+		custom_downsample=custom_downsample, target_patch_size=target_patch_size, feat_dir = feat_dir)
 	x, y = dataset[0]
 	kwargs = {'num_workers': 1, 'pin_memory': True} if device.type == "cuda" else {}
 	loader = DataLoader(dataset=dataset, batch_size=batch_size, **kwargs, collate_fn=collate_features)
@@ -132,7 +132,7 @@ if __name__ == '__main__':
 		wsi = openslide.open_slide(slide_file_path)
 		output_file_path = compute_w_loader_(h5_file_path, slide_id, output_path, wsi, 
 			batch_size = args.batch_size, verbose = 1, print_every = 20, 
-			custom_downsample=args.custom_downsample, target_patch_size=args.target_patch_size)
+			custom_downsample=args.custom_downsample, target_patch_size=args.target_patch_size, feat_dir = args.feat_dir)
 		time_elapsed = time.time() - time_start
 		print('\ncomputing features for {} took {} s'.format(output_file_path, time_elapsed))
 		# file = h5py.File(output_file_path, "r")

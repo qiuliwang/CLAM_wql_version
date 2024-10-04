@@ -165,7 +165,8 @@ class Whole_Slide_Bag_FP(Dataset):
         pretrained=False,
         custom_transforms=None,
         custom_downsample=1,
-        target_patch_size=-1
+        target_patch_size=-1,
+        feat_dir = ''
         ):
         """
         Args:
@@ -184,6 +185,7 @@ class Whole_Slide_Bag_FP(Dataset):
             self.roi_transforms = custom_transforms
 
         self.file_path = file_path
+        self.feat_dir = feat_dir
         with h5py.File(self.file_path, "r") as f:
 
             dset = f['coords']
@@ -221,7 +223,7 @@ class Whole_Slide_Bag_FP(Dataset):
         status = ImageStat.Stat(img).var
         # if status[0] > 100 and status[0] < 6000 and status[1] > 100 and status[1] < 6000 and status[2] > 100 and status[2] < 6000:
         #     if random.randint(1,10) % 5 == 0:
-        img.save('Glioma_CD4_Extract_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg')
+        img.save(os.path.join(self.feat_dir, self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.jpeg'))
         # + '_' + str(ImageStat.Stat(img).var)
         if self.target_patch_size is not None:
             img = img.resize(self.target_patch_size)
@@ -321,11 +323,13 @@ class Whole_Slide_Bag_FP_mask(Dataset):
         inner_mask_npy = np.where(inner_mask_npy > 127, 255, 0)
 
         # if np.array(inner_mask).max() > 0:
-        # print('TCGA_padding_Extracted_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.png')
-        inner_mask.save('Glioma_CD4_Extract_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.png')
+        # print(os.path.join('Glioma_Extract_Patch', self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.npy'))
+        feat_dir = 'Glioma_Extract_Patch'
+        # print(feat_dir)
+        inner_mask.save(os.path.join(feat_dir, self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.png'))
         inner_mask_npy = np.array(inner_mask)
-        np.save('Glioma_CD4_Extract_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.npy', inner_mask_npy)
-        img.save('Glioma_CD4_Extract_Patch/' + self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.png')
+        np.save(os.path.join(feat_dir, self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '_mask.npy'), inner_mask_npy)
+        img.save(os.path.join(feat_dir,  self.slide_id + '_' + str(coord[0]) + '_' + str(coord[1]) + '.png'))
 
         if self.target_patch_size is not None:
             img = img.resize(self.target_patch_size)

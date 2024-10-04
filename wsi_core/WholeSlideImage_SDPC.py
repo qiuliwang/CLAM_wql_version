@@ -10,8 +10,8 @@ import numpy as np
 from multiprocessing import  Process
 import threading
 
-with os.add_dll_directory(r'D:\\Program Files\\openslide-win64-20231011\\bin'):
-    import openslide
+# with os.add_dll_directory(r'C:\Program Files (x86)\ImageViewer\Windows\openslide'):
+import openslide
 
 from PIL import Image
 import pdb
@@ -27,13 +27,13 @@ import sdpc
 Image.MAX_IMAGE_PIXELS = 933120000
 
 class WholeSlideImage_SDPC(object):
-    def __init__(self, path):
+    def __init__(self, path, multi):
 
         """
         Args:
             path (str): fullpath to WSI file
         """
-
+        self.multi = multi
         self.name = os.path.splitext(os.path.basename(path))[0]
         self.wsi = sdpc.Sdpc(path)
         # print('level_dimensions: ', self.wsi.level_dimensions)
@@ -42,8 +42,16 @@ class WholeSlideImage_SDPC(object):
 
 
         self.level_downsamples = self._assertLevelDownsamples()
-        self.level_dim = self.wsi.level_dimensions
-    
+        # print(self.wsi.level_dimensions)
+        # w, h = self.wsi.level_dimensions
+        self.level_dim = []
+        # self.wsi.level_dimensions
+        for ttt in self.wsi.level_dimensions:
+            w, h = ttt
+            w = w / self.multi
+            ttt = int(w), h
+            self.level_dim.append(ttt)
+
         self.contours_tissue = None
         self.contours_tumor = None
         self.hdf5_file = None
@@ -600,6 +608,7 @@ class WholeSlideImage_SDPC(object):
             vis_level = self.wsi.get_best_level_for_downsample(64)
 
         downsample = self.level_downsamples[vis_level]
+
         scale = [1/downsample[0], 1/downsample[1]] # Scaling from 0 to desired level
                 
         if len(scores.shape) == 2:
