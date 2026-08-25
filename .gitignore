@@ -1,0 +1,39 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# ---- 模型/数据/输出（大文件不入库）----
+*.pth
+*.pt
+*.onnx
+*.h5
+*.hdf5
+*.svs
+*.tif
+*.npy
+*.npz
+*.csv
+*.png
+*.jpg
+*.jpeg
+*.gif
+runs/
+checkpoints/
+datasets/
+results/
+
+# ---- 训练日志/记录 ----
+visdom/
+wandb/
+
+# ---- Jupyter ----
+.ipynb_checkpoints/
+
+# ---- 编辑器/环境 ----
+.vscode/
+.idea/
+.DS_Store
+venv/

@@ -8,8 +8,8 @@
 
 ### 1. 安装
 ```bash
-git clone https://github.com/yourname/your-repo.git
-cd your-repo
+git clone https://github.com/qiuliwang/CLAM_USAPAT_version.git
+cd CLAM_USAPAT_version/code_USAPAT
 pip install -r requirements.txt
 ```
 
@@ -43,15 +43,14 @@ python test_onlyFake.py --dataroot ./datasets/BCI_example/TrainValAB/valA --name
 ### 结果保存在 runs/transformer_mask_BCI/test_300/images/
 
 ### 常用参数
-```bash
-| 参数                                | 说明                            |
-| --------------------------------- | ----------------------------- |
-| `--name`                          | 实验名称                          |
-| `--load_size`                     | 加载图像短边尺寸                      |
-| `--crop_size`                     | 训练裁剪尺寸                        |
-| `--n_epochs` / `--n_epochs_decay` | 训练与衰减阶段 epoch 数               |
-| `--netG`                          | 生成器结构，默认 `resnet_6blocks_vit` |
-```
+
+| 参数 | 说明 |
+| --- | --- |
+| `--name` | 实验名称 |
+| `--load_size` | 加载图像短边尺寸 |
+| `--crop_size` | 训练裁剪尺寸 |
+| `--n_epochs` / `--n_epochs_decay` | 训练与衰减阶段 epoch 数 |
+| `--netG` | 生成器结构，默认 `resnet_6blocks_vit` |
 
 ### 断点续训
 ```bash
@@ -59,6 +58,5 @@ python train.py ... --continue_train --epoch_count <last_epoch>
 ```
 
 ### 许可证
-```bash
+
 MIT
-```

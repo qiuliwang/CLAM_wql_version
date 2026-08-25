@@ -1,0 +1,22 @@
+# ---- USAPAT（code_USAPAT/）----
+torch>=1.4.0
+torchvision>=0.5.0
+dominate>=2.4.0
+visdom>=0.1.8.8
+wandb
+
+# ---- CLAM（code_clam/）----
+# code_clam 在 USAPAT 依赖之上还需要：
+numpy
+pandas
+matplotlib
+opencv-python
+scipy
+scikit-learn
+tqdm
+h5py
+openslide-python
+imageio
+Pillow
+byol_pytorch        # extract_features_byol.py 使用
+# sdpc 模块为本地私有依赖，未发布（extract_patches_sdpc.py 使用）
